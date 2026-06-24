@@ -33,7 +33,14 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300&family=Montserrat:wght@500;600&family=Open+Sans:wght@400;600&display=swap"
         rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 </head>
@@ -42,12 +49,29 @@
 
     <!-- center the image -->
     <div class="text-center bg-image hover-overlay ripple">
-        <img id="hero-img" src="./Images/china.jpg" alt="Profile Pic" class="img-fluid">
+        <img id="hero-a" src="./Images/china.jpg" alt="" class="hero-img">
+        <img id="hero-b" src="" alt="" class="hero-img hero-top">
         <script>
-            const imgs = ['./Images/china.jpg', './Images/uae.jpg', './Images/aust-1.jpg', './Images/aust-2.jpg'];
-            document.getElementById('hero-img').src = imgs[Math.floor(Math.random() * imgs.length)];
+            const imgs = ['./Images/china.jpg', './Images/uae.jpg', './Images/aust-1.jpg', 
+            './Images/aust-2.jpg', './Images/china-2.jpg'];
+            let idx = Math.floor(Math.random() * imgs.length);
+            const a = document.getElementById('hero-a');
+            const b = document.getElementById('hero-b');
+            const FADE = 3000;
+            a.src = imgs[idx];
+            setInterval(() => {
+                let next;
+                do { next = Math.floor(Math.random() * imgs.length); } while (next === idx);
+                idx = next;
+                b.src = imgs[idx];
+                b.style.opacity = '1';
+                setTimeout(() => {
+                    a.src = imgs[idx];
+                    b.style.opacity = '0';
+                }, FADE);
+            }, 6000);
         </script>
-        <a href="#">
+        <a href="#" style="position:relative; z-index:2;">
             <div class="mask" style="background-color: rgba(191, 126, 235, 0.185);"></div>
         </a>
     </div>
@@ -55,6 +79,12 @@
     <!-- <img src="./Images/background-cropped.jpg" alt="Background Image" height="100px" > -->
 
     <div class="site-content">
+
+        <div class="page-quote">
+            <p class="quote-text">"It takes something more than intelligence to act intelligently"</p>
+            <p class="quote-author">— Fyodor Dostoevsky</p>
+        </div>
+        <!-- <hr> -->
 
         <h1 class="display-6 gradient-text" style="font-family: 'Montserrat', sans-serif;">About Me</h1>
         <hr>
@@ -168,12 +198,49 @@
 
         </div>
 
-        <h1 class="display-6 mt-3 gradient-text" style="font-family: 'Montserrat', sans-serif;">Publications</h1>
+        <h1 class="display-6 mt-1 gradient-text" style="font-family: 'Montserrat', sans-serif;">Publications</h1>
         <hr>
 
         <div style="font-family: 'Raleway', sans-serif;">
 
             <div class="row">
+                <!-- GIF Column -->
+                <div class="col-md-3 text-center">
+                    <img src="./Images/obj_pose.png" alt="Project GIF" class="img-fluid rounded" width="80%">
+                </div>
+
+                <!-- Text Column -->
+                <div class="col-md-9">
+                    <span class="badge badge-dark rounded-pill">May, 2026</span>
+                    <u>Object Pose and Shape Estimation
+                        for Grasping: Does it Work?</u> (Under review)
+                    <div class="mt-1">
+                        <i>Pavan Karke<sup>&#x2605</sup>, Kushal Shah<sup>&#x2605</sup>,
+                            Gaurav Singh, <b>Md Faizal Karim</b>, K Madhava Krishna, Rajat Talak</i>
+                    </div>
+
+
+                    <div class="row mt-2 pub-buttons">
+                        <div class="col-md-2">
+                            <a href="https://arxiv.org/abs/2605.26944" target="_blank" class="btn btn-outline-primary"
+                                role="button" data-mdb-ripple-init data-mdb-ripple-color="dark">Paper</a>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="https://arxiv.org/abs/2605.26944" target="_blank"
+                                class="btn btn-outline-primary" role="button">Code</a>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="https://www.youtube.com/watch?v=siyVpkVEBoY" target="_blank"
+                                class="btn btn-outline-primary" role="button">Website</a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <div class="row" style="margin-top: 6%;">
                 <!-- GIF Column -->
                 <div class="col-md-3 text-center">
                     <img src="./Images/dagdiff2.gif" alt="Project GIF" class="img-fluid rounded" width="80%">
@@ -230,11 +297,11 @@
 
                     <div class="row mt-2 pub-buttons">
                         <div class="col-md-2">
-                            <a href="https://dg16m.github.io/DG-16M/" target="_blank" class="btn btn-outline-primary"
+                            <a href="https://arxiv.org/abs/2503.08358" target="_blank" class="btn btn-outline-primary"
                                 role="button" data-mdb-ripple-init data-mdb-ripple-color="dark">Paper</a>
                         </div>
                         <div class="col-md-2">
-                            <a href="https://dg16m.github.io/DG-16M/" target="_blank" class="btn btn-outline-primary"
+                            <a href="https://github.com/DG16M/DG16M-dataset" target="_blank" class="btn btn-outline-primary"
                                 role="button">Code</a>
                         </div>
                         <div class="col-md-2">
@@ -393,7 +460,8 @@
                 </li>
 
                 <li><span class="badge badge-success rounded-pill">May, 2023</span>
-                    Joined Robotics Research Center <img src="./Images/rrc-logo.png" class="inline-logo" alt="RRC"> IIIT Hyderabad and currently working on 3D Shape Completition.</li>
+                    Joined Robotics Research Center <img src="./Images/rrc-logo.png" class="inline-logo" alt="RRC"> IIIT
+                    Hyderabad and currently working on 3D Shape Completition.</li>
                 <li>
                     <span class="badge badge-success rounded-pill">Oct, 2022</span>
                     1st prize winner in Megathon 2022 - &nbsp;annual hackathon of IIIT Hyderabad.
@@ -466,7 +534,7 @@
     </div>
 
 
-    <footer class="footer bg-dark text-center text-lg-start text-light py-2 mt-5">
+    <footer class="footer bg-dark text-center text-lg-start text-light py-2 mt-4">
         <div class=" text-center">
             Updated June, 2026
         </div>
