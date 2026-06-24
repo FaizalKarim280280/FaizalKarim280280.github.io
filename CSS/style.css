@@ -84,15 +84,16 @@ h1 {
 
 .links {
     display: flex;
-    flex-wrap: wrap;
-    /* gap: 12px; */
+    flex-wrap: nowrap;
+    gap: 4px;
     margin-top: 20px;
+    justify-content: center;
 }
 
 
 .icon-link {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     display: inline-flex;
     /* better than grid for font icons */
     align-items: center;
@@ -116,7 +117,7 @@ h1 {
 }
 
 .icon-link i {
-    font-size: 16px;
+    font-size: 20px;
     display: block;
     /* removes inline spacing issues */
 }
@@ -167,6 +168,14 @@ h1 {
 }
 
 
+.inline-logo {
+    height: 1.2em;
+    width: auto;
+    vertical-align: middle;
+    border-radius: 3px;
+    margin-top: -2px;
+}
+
 .book {
     background-color: rgb(248, 248, 248);
     padding: 40px 20px 40px 20px;
@@ -205,16 +214,21 @@ h1 {
         font-size: 0.75rem;
     }
 
-    .links {
-        gap: 30px;
-    }
-
     .icon-link {
         width: 44px;
         height: 44px;
         margin-bottom: 20px;
+
     }
 
+}
+
+/* Keep pub buttons (Paper / Code / Website) in a horizontal row at all screen sizes */
+.pub-buttons > div {
+    flex: 0 0 auto;
+    width: auto;
+    padding-right: 0.5rem;
+    padding-left: 0;
 }
 
 /* Responsive layout */

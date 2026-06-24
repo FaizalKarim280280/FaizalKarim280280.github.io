@@ -42,7 +42,11 @@
 
     <!-- center the image -->
     <div class="text-center bg-image hover-overlay ripple">
-        <img src="./Images/background-cropped.jpg" alt="Profile Pic" class="img-fluid">
+        <img id="hero-img" src="./Images/china.jpg" alt="Profile Pic" class="img-fluid">
+        <script>
+            const imgs = ['./Images/china.jpg', './Images/uae.jpg', './Images/aust-1.jpg', './Images/aust-2.jpg'];
+            document.getElementById('hero-img').src = imgs[Math.floor(Math.random() * imgs.length)];
+        </script>
         <a href="#">
             <div class="mask" style="background-color: rgba(191, 126, 235, 0.185);"></div>
         </a>
@@ -86,7 +90,8 @@
                     </a>
 
                     <!-- Google Scholar -->
-                    <a class="icon-link" href="https://scholar.google.com/citations?user=cU1Y0usAAAAJ&hl=en"
+                    <a class="icon-link"
+                        href="https://scholar.google.com/citations?hl=en&user=cU1Y0usAAAAJ&view_op=list_works&sortby=pubdate"
                         target="_blank" rel="noreferrer" aria-label="Google Scholar">
                         <i class="fa-brands fa-google-scholar"></i>
 
@@ -104,19 +109,24 @@
                     <p> Hi! I am <b>Md Faizal Karim. </b></p>
 
                     <p>I am an incoming CS PhD student at <u><a class="college-link" target="_blank"
-                                href="https://www.jhu.edu/">Johns Hopkins University</a></u> and I'll be working with 
-                                <u><a class="college-link" target="_blank" href="https://engineering.jhu.edu/faculty/krishna-murthy-jatavallabhula/">Prof. Krishna Murthy</a></u> in the Sci-phy lab. 
+                                href="https://www.jhu.edu/">Johns Hopkins University</a></u> and I'll be working with
+                        <u><a class="college-link" target="_blank"
+                                href="https://engineering.jhu.edu/faculty/krishna-murthy-jatavallabhula/">Prof. Krishna
+                                Murthy</a></u> in
+                        <u><a class="college-link" target="_blank" href="https://sci-fi-lab.github.io/">Sci-Phy</a></u>
+                        Lab.
                     </p>
 
                     <p>Previously, I was a CS dual-degree student at <u><a class="college-link" target="_blank"
-                                href="https://www.iiit.ac.in/">IIIT Hyderabad</a></u> and completed my thesis on "Dual-arm Grasping" under <u><a class="college-link" target="_blank"
-                                href="https://www.iiit.ac.in/people/faculty/mkrishna/">Prof. K Madhava Krishna</a></u>. 
+                                href="https://www.iiit.ac.in/">IIIT Hyderabad</a></u> and completed my thesis on
+                        "Dual-arm Grasping" under <u><a class="college-link" target="_blank"
+                                href="https://www.iiit.ac.in/people/faculty/mkrishna/">Prof. K Madhava Krishna</a></u>.
                     </p>
-                    
+
 
                     <p>
                         Outside research, I spend my
-                        time reading non-fiction (do check out my reading list <a href="./reading-list.html"
+                        time reading (do check out my reading list <a href="./reading-list.html"
                             target="_blank"><em>here</em></a>), playing open-world
                         games and attending every major concert I can!
                     </p>
@@ -181,7 +191,7 @@
                     </div>
 
 
-                    <div class="row mt-2">
+                    <div class="row mt-2 pub-buttons">
                         <div class="col-md-2">
                             <a href="https://arxiv.org/abs/2509.21145" target="_blank" class="btn btn-outline-primary"
                                 role="button" data-mdb-ripple-init data-mdb-ripple-color="dark">Paper</a>
@@ -354,30 +364,36 @@
         <hr>
         <div style="font-family: 'Raleway', sans-serif;">
             <ul>
-                <li><span class="badge badge-success rounded-pill">Jun, 2025</span>
+                <li><span class="badge badge-success rounded-pill">July, 2026</span>
+                    Graduated from IIIT Hyderabad <img src="./Images/iiit-logo.jpeg" class="inline-logo"
+                        alt="IIIT Hyderabad"> and I'll be joining JHU <img src="./Images/jhu-blue-jay.png"
+                        class="inline-logo" alt="JHU"> this fall as a PhD student in CS.
+                </li>
+
+                <li><span class="badge badge-success rounded-pill">Jan, 2026</span>
                     <i>DAGDiff: Guiding Dual-Arm Grasp Diffusion to Stable and Collision-Free Grasps</i> accepted at
-                    ICRA 2026, Vienna, Austria. 🎉
+                    ICRA 2026, Vienna, Austria. 🇦🇹
                 </li>
 
                 <li><span class="badge badge-success rounded-pill">Jun, 2025</span>
                     <i>DG16M: A Large-Scale Dataset for Dual-Arm Grasping with Force-Optimized Grasps</i> accepted at
-                    IROS 2025, Hangzhou, China. 🎉
+                    IROS 2025, Hangzhou, China. 🇨🇳
                 </li>
 
                 <li><span class="badge badge-success rounded-pill">Jan, 2025</span>
                     <i>DA-VIL: Adaptive Dual-Arm Manipulation with Reinforcement Learning and Variable Impedance
                         Control</i>
                     accepted at
-                    ICRA 2025, Atlanta, USA. 🎉
+                    ICRA 2025, Atlanta, USA. 🇺🇸
                 </li>
                 <li><span class="badge badge-success rounded-pill">June, 2024</span>
                     <i>Constrained 6-DoF Grasp Generation on Complex Shapes for Improved Dual-Arm Manipulation</i>
                     accepted at
-                    IROS 2024, Abu Dhabi, UAE. 🎉
+                    IROS 2024, Abu Dhabi, UAE. 🇦🇪
                 </li>
 
                 <li><span class="badge badge-success rounded-pill">May, 2023</span>
-                    Joined Robotics Research Center, IIIT Hyderabad and currently working on 3D Shape Completition.</li>
+                    Joined Robotics Research Center <img src="./Images/rrc-logo.png" class="inline-logo" alt="RRC"> IIIT Hyderabad and currently working on 3D Shape Completition.</li>
                 <li>
                     <span class="badge badge-success rounded-pill">Oct, 2022</span>
                     1st prize winner in Megathon 2022 - &nbsp;annual hackathon of IIIT Hyderabad.
@@ -452,7 +468,7 @@
 
     <footer class="footer bg-dark text-center text-lg-start text-light py-2 mt-5">
         <div class=" text-center">
-            Updated Feb, 2026
+            Updated June, 2026
         </div>
     </footer>
 
