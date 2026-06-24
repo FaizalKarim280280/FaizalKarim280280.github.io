@@ -1,0 +1,258 @@
+/* body {
+    background: #fbfaff;
+} */
+
+
+.navbar-top {
+    border-radius: 5px;
+    /*margin-left: 25%;*/
+    /*margin-right: 10%;*/
+    margin-top: 10px;
+}
+
+.my-info {
+    padding-left: 6px;
+    padding-top: 6px;
+    font-size: 18px;
+    font-family: 'Public Sans', sans-serif;
+    border-radius: 5px;
+    margin-left: 25%;
+    margin-right: 10%;
+}
+
+.nav-item {
+    font-size: 25px;
+    margin-right: 30px;
+}
+
+.display-5 {
+    padding-top: 30px;
+    /*padding-left: 0px;*/
+}
+
+.display-6 {
+    padding-top: 30px;
+}
+
+.college-link {
+    color: rgba(41, 41, 50, 0.7);
+    text-decoration: none;
+}
+
+.college-link:hover {
+    text-decoration: underline;
+    color: rgb(34, 37, 45);
+}
+
+/* .footer{
+    margin-top: 50px;
+    height: 100px;
+    width: 100%;
+    background-color: rgba(196, 196, 196, 0.75);
+} */
+
+li {
+    padding: 3px;
+}
+
+h1 {
+    color: black;
+}
+
+.edu-pic {
+    width: 150px;
+    height: 1500px;
+}
+
+.profile-pic {
+    width: 100%;
+    height: 100%;
+}
+
+.profile {
+    float: left;
+}
+
+.contact-me {
+    margin-left: 10%;
+    margin-top: 10%;
+}
+
+.contact-links {
+    color: #4b83e5;
+}
+
+.links {
+    display: flex;
+    flex-wrap: wrap;
+    /* gap: 12px; */
+    margin-top: 20px;
+}
+
+
+.icon-link {
+    width: 35px;
+    height: 35px;
+    display: inline-flex;
+    /* better than grid for font icons */
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.35);
+    text-decoration: none;
+    line-height: 0;
+    /* removes baseline gap */
+    transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.icon-link:hover,
+.icon-link:focus-visible {
+    transform: translateY(-5px);
+    border-color: rgba(109, 76, 65, 0.35);
+    background: rgba(255, 255, 255, 0.72);
+    outline: none;
+}
+
+.icon-link i {
+    font-size: 16px;
+    display: block;
+    /* removes inline spacing issues */
+}
+
+
+.icon {
+    padding: 5px
+}
+
+.project-pics {
+    height: 100px;
+    width: 200px;
+    border-radius: 10%;
+}
+
+.project-link {
+    color: rgb(192, 71, 71);
+    text-decoration: none;
+}
+
+.footer {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 15px;
+}
+
+.college-logo {
+    width: 50%;
+    /* height: 30%; */
+}
+
+.my-container {
+    width: 50%;
+    margin-top: 5%;
+}
+
+.my-font {
+    font-family: 'Raleway';
+}
+
+.gradient-text {
+    background: linear-gradient(to right, #9747ff, #fd75db);
+    /* DarkBlue to LightBlue */
+    /* -webkit-background-clip: text; */
+    /* -webkit-text-fill-color: transparent; */
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+
+.book {
+    background-color: rgb(248, 248, 248);
+    padding: 40px 20px 40px 20px;
+    border-radius: 10px;
+}
+
+/* Education section */
+.edu-logo {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+}
+
+.edu-name {
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.edu-detail {
+    font-weight: 300;
+    font-size: 0.85rem;
+}
+
+.edu-col {
+    padding: 0 8px;
+}
+
+@media (max-width: 767.98px) {
+    .edu-logo {
+        width: 60px;
+        height: 60px;
+    }
+
+    .edu-name,
+    .edu-detail {
+        font-size: 0.75rem;
+    }
+
+    .links {
+        gap: 30px;
+    }
+
+    .icon-link {
+        width: 44px;
+        height: 44px;
+        margin-bottom: 20px;
+    }
+
+}
+
+/* Responsive layout */
+.site-content {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1.5%;
+    padding: 25px;
+}
+
+.bg-image {
+    overflow: hidden;
+}
+
+.bg-image .img-fluid {
+    max-height: 450px;
+    object-fit: cover;
+    width: 100%;
+}
+
+@media (max-width: 767.98px) {
+    .site-content {
+        margin-top: 5%;
+    }
+
+    .bg-image .img-fluid {
+        max-height: 200px;
+    }
+
+    /* .pub-buttons {
+        width: 30%;
+    } */
+
+    .profile-pic {
+        /* max-width: 30px; */
+        width: 85%;
+        display: block;
+        margin: 0 auto 1rem;
+    }
+}
