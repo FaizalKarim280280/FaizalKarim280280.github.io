@@ -69,7 +69,6 @@
                 let next;
                 do { next = Math.floor(Math.random() * imgs.length); } while (next === idx);
                 idx = next;
-                console.log(idx, imgs.length)
                 b.src = imgs[idx];
                 b.style.opacity = '1';
                 setTimeout(() => {
@@ -77,6 +76,18 @@
                     b.style.opacity = '0';
                 }, FADE);
             }, 6000);
+            
+            const hero = a.closest('.bg-image');
+            window.addEventListener('scroll', () => {
+                const y = window.scrollY * 0.5;
+                const blur = Math.min(12, window.scrollY / hero.offsetHeight * 4);
+                a.style.transform = `translateY(${y}px)`;
+                b.style.transform = `translateY(${y}px)`;
+                a.style.filter = `blur(${blur}px)`;
+                b.style.filter = `blur(${blur}px)`;
+
+            }, { passive: true });
+
         </script>
         <a href="#" style="position:relative; z-index:2;">
             <div class="mask" style="background-color: rgba(191, 126, 235, 0.185);"></div>
@@ -145,8 +156,8 @@
                 <div style="font-family: 'Raleway', sans-serif;">
                     <p> Hi! I am <b>Md Faizal Karim. </b></p>
 
-                    <p>I am an incoming CS PhD student at <u><a class="college-link" target="_blank"
-                                href="https://www.jhu.edu/">Johns Hopkins University</a></u> and I'll be working with
+                    <p>I am an incoming CS PhD student at <a class="college-link" target="_blank"
+                                href="https://www.jhu.edu/">Johns Hopkins University <img src="./Images/jhu_logo.jpg" class="inline-logo"></img> </a> and I'll be working with
                         <u><a class="college-link" target="_blank"
                                 href="https://engineering.jhu.edu/faculty/krishna-murthy-jatavallabhula/">Prof. Krishna
                                 Murthy</a></u> in
@@ -154,9 +165,9 @@
                         Lab.
                     </p>
 
-                    <p>Previously, I was a CS dual-degree student at <u><a class="college-link" target="_blank"
-                                href="https://www.iiit.ac.in/">IIIT Hyderabad</a></u> and completed my thesis on
-                        "Dual-arm Grasping" supervised by <u><a class="college-link" target="_blank"
+                    <p>Previously, I was a CS dual-degree student at <a class="college-link" target="_blank"
+                                href="https://www.iiit.ac.in/">IIIT Hyderabad <img src="./Images/iiit-logo.jpeg" class="inline-logo"></img> </a> and completed my thesis on
+                        "Physically stable dual-arm grasping" supervised by <u><a class="college-link" target="_blank"
                                 href="https://www.iiit.ac.in/people/faculty/mkrishna/">Prof. K Madhava Krishna</a></u>.
                     </p>
 
