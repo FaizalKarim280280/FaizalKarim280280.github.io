@@ -69,6 +69,7 @@
                 let next;
                 do { next = Math.floor(Math.random() * imgs.length); } while (next === idx);
                 idx = next;
+                console.log(idx, imgs.length)
                 b.src = imgs[idx];
                 b.style.opacity = '1';
                 setTimeout(() => {
