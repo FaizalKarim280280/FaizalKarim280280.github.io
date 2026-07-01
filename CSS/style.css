@@ -262,7 +262,16 @@ h1 {
     flex: 0 0 auto;
     width: auto;
     padding-right: 0.5rem;
-    padding-left: 0;
+    padding-left: 12px;
+}
+
+.pub-list > .row:nth-child(even) {
+    background: #fafafa;
+    border-radius: 12px;
+    padding-top: 30px;
+    padding-bottom: 16px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .pub-buttons .btn {
@@ -313,9 +322,9 @@ h1 {
         height: 200px;
     }
 
-    /* .pub-buttons {
-        width: 30%;
-    } */
+    .pub-buttons {
+        padding-left: 12px;
+    }
 
     .profile-pic {
         /* max-width: 30px; */
