@@ -1,0 +1,31 @@
+{
+  "name": "Faizal Karim",
+  "photo": "Images/me-2026-final.png",
+  "lastUpdated": "Oct, 2026",
+  "heroImages": [
+    "./Images/china.jpg",
+    "./Images/uae.jpg",
+    "./Images/aust-1.jpg",
+    "./Images/aust-2.jpg",
+    "./Images/china-2.jpg",
+    "./Images/coldplay.jpg",
+    "./Images/church.jpg"
+  ],
+  "quote": {
+    "text": "It takes something more than intelligence to act intelligently",
+    "author": "Fyodor Dostoevsky"
+  },
+  "socials": [
+    { "icon": "fa-solid fa-envelope", "url": "mailto:md.faizal@research.iiit.ac.in", "label": "Email" },
+    { "icon": "fa-brands fa-linkedin", "url": "https://www.linkedin.com/in/md-faizal-karim-720160217/", "label": "LinkedIn" },
+    { "icon": "fa-brands fa-github", "url": "https://github.com/FaizalKarim280280", "label": "GitHub" },
+    { "icon": "fa-brands fa-x-twitter", "url": "https://x.com/f280_karim", "label": "Twitter" },
+    { "icon": "fa-brands fa-google-scholar", "url": "https://scholar.google.com/citations?hl=en&user=cU1Y0usAAAAJ&view_op=list_works&sortby=pubdate", "label": "Google Scholar" }
+  ],
+  "bio": [
+    "Hi! I am <b>Faizal Karim.</b>",
+    "I am a 1<sup>st</sup> year CS PhD student at <a class=\"college-link\" target=\"_blank\" href=\"https://www.jhu.edu/\">Johns Hopkins University <img src=\"./Images/jhu_logo.jpg\" class=\"inline-logo\"></a> and I am working with <u><a class=\"college-link\" target=\"_blank\" href=\"https://engineering.jhu.edu/faculty/krishna-murthy-jatavallabhula/\">Prof. Krishna Murthy</a></u> in <u><a class=\"college-link\" target=\"_blank\" href=\"https://sci-fi-lab.github.io/\">Sci-Phy</a></u> Lab.",
+    "Previously, I was a CS dual-degree student at <a class=\"college-link\" target=\"_blank\" href=\"https://www.iiit.ac.in/\">IIIT Hyderabad <img src=\"./Images/iiit-logo.jpeg\" class=\"inline-logo\"></a> and completed my thesis on \"Physically stable dual-arm grasping\" supervised by <u><a class=\"college-link\" target=\"_blank\" href=\"https://www.iiit.ac.in/people/faculty/mkrishna/\">Prof. K Madhava Krishna</a></u>.",
+    "Outside research, I spend my time reading (do check out my reading list <a href=\"./reading-list.html\" target=\"_blank\"><em>here</em></a>), playing open-world games and attending every major concert I can!"
+  ]
+}

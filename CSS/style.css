@@ -158,16 +158,65 @@ h1 {
 }
 
 .my-font {
-    font-family: 'Raleway';
+    font-family: 'Inter', sans-serif;
 }
 
-.gradient-text {
-    background: linear-gradient(to right, #9747ff, #fd75db);
-    /* DarkBlue to LightBlue */
-    /* -webkit-background-clip: text; */
-    /* -webkit-text-fill-color: transparent; */
-    background-clip: text;
-    color: transparent;
+.section-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+    letter-spacing: -0.01em;
+}
+
+#education-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.news-scroll {
+    max-height: 340px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.news-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.news-scroll::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 3px;
+}
+
+.news-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.edu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.edu-item:last-child {
+    margin-bottom: 0;
+}
+
+.edu-degree {
+    font-weight: 300;
+}
+
+.edu-years {
+    color: #888;
+    font-weight: 300;
+    white-space: nowrap;
+}
+
+.heading-accent {
+    color: #5a5a5a;
     display: inline-block;
 }
 
@@ -257,29 +306,44 @@ h1 {
 
 }
 
-/* Keep pub buttons (Paper / Code / Website) in a horizontal row at all screen sizes */
-.pub-buttons > div {
-    flex: 0 0 auto;
-    width: auto;
-    padding-right: 0.5rem;
-    padding-left: 12px;
+.pub-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
 }
 
-.pub-list > .row:nth-child(even) {
-    background: #fafafa;
-    border-radius: 12px;
-    padding-top: 30px;
-    padding-bottom: 16px;
+.pub-link {
+    color: #8a3ffc;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding-bottom: 1px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.pub-link:hover,
+.pub-link:focus-visible {
+    color: #5e1fc4;
+    border-color: currentColor;
+}
+
+.pub-link-sep {
+    color: #ccc;
+    font-size: 0.8rem;
+}
+
+.pub-row {
+    border-radius: 14px;
+    padding-top: 26px;
+    padding-bottom: 26px;
     margin-left: 0;
     margin-right: 0;
-}
-
-.pub-buttons .btn {
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
-    font-size: 0.8rem;
+    margin-bottom: 10px;
 }
 
 /* Responsive layout */
@@ -289,6 +353,12 @@ h1 {
     margin-right: auto;
     margin-top: 1.5%;
     padding: 25px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.site-content.loaded {
+    opacity: 1;
 }
 
 .bg-image {
@@ -320,10 +390,6 @@ h1 {
 
     .bg-image {
         height: 200px;
-    }
-
-    .pub-buttons {
-        padding-left: 12px;
     }
 
     .profile-pic {

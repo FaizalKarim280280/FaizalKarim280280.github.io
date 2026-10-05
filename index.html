@@ -26,582 +26,77 @@
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.min.css" rel="stylesheet" />
 
+    <!-- Google Fonts (only the families actually used in CSS/style.css) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300&family=Montserrat:wght@500;600&family=Open+Sans:wght@400;600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400..700&display=swap"
         rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&display=swap"
-        rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 </head>
 
 <body>
 
-    <!-- fading the image -->
-    <!-- center the image -->
+    <!-- Hero background slideshow, driven by heroImages in data/profile.json -->
     <div class="text-center bg-image hover-overlay ripple">
-        <img id="hero-a" src="./Images/china.jpg" alt="" class="hero-img">
+        <img id="hero-a" src="" alt="" class="hero-img">
         <img id="hero-b" src="" alt="" class="hero-img hero-top">
-        <script>
-            const imgs = ['./Images/china.jpg', './Images/uae.jpg', './Images/aust-1.jpg',
-                './Images/aust-2.jpg', './Images/china-2.jpg', './Images/coldplay.jpg', './Images/church.jpg'];
-            let idx = Math.floor(Math.random() * imgs.length);
-            const a = document.getElementById('hero-a');
-            const b = document.getElementById('hero-b');
-            const FADE = 3000;
-            a.src = imgs[idx];
-            setInterval(() => {
-                let next;
-                do { next = Math.floor(Math.random() * imgs.length); } while (next === idx);
-                idx = next;
-                b.src = imgs[idx];
-                b.style.opacity = '1';
-                setTimeout(() => {
-                    a.src = imgs[idx];
-                    b.style.opacity = '0';
-                }, FADE);
-            }, 6000);
-
-            const hero = a.closest('.bg-image');
-            window.addEventListener('scroll', () => {
-                const y = window.scrollY * 0.5;
-                const blur = Math.min(12, window.scrollY / hero.offsetHeight * 4);
-                a.style.transform = `translateY(${y}px)`;
-                b.style.transform = `translateY(${y}px)`;
-                a.style.filter = `blur(${blur}px)`;
-                b.style.filter = `blur(${blur}px)`;
-
-            }, { passive: true });
-
-        </script>
         <a href="#" style="position:relative; z-index:2;">
             <div class="mask" style="background-color: rgba(191, 126, 235, 0.185);"></div>
         </a>
     </div>
 
-    <!-- <img src="./Images/background-cropped.jpg" alt="Background Image" height="100px" > -->
-
     <div class="site-content">
 
         <div class="page-quote">
-            <p class="quote-text">"It takes something more than intelligence to act intelligently"</p>
-            <p class="quote-author">— Fyodor Dostoevsky</p>
+            <p class="quote-text" id="quote-text"></p>
+            <p class="quote-author" id="quote-author"></p>
         </div>
-        <!-- <hr> -->
 
-        <h1 class="display-6 gradient-text" style="font-family: 'Montserrat', sans-serif;">About Me</h1>
+        <h1 class="display-6 heading-accent section-title">About Me</h1>
         <hr>
 
         <div class="row">
             <div class="col-md-3">
-                <img class="profile-pic img-fluid" src="Images/me-2026-final.png" alt="Profile Pic">
-                <!-- <div class="mt-3 text-center"> -->
+                <img class="profile-pic img-fluid" id="profile-pic" src="" alt="Profile Pic">
 
-                <div class="links">
-
-                    <!-- Email -->
-                    <a class="icon-link" href="mailto:md.faizal@research.iiit.ac.in" aria-label="Email">
-                        <i class="fa-solid fa-envelope"></i>
-                    </a>
-
-                    <!-- LinkedIn -->
-                    <a class="icon-link" href="https://www.linkedin.com/in/md-faizal-karim-720160217/" target="_blank"
-                        rel="noreferrer" aria-label="LinkedIn">
-                        <i class="fa-brands fa-linkedin"></i>
-                    </a>
-
-                    <!-- GitHub -->
-                    <a class="icon-link" href="https://github.com/FaizalKarim280280" target="_blank" rel="noreferrer"
-                        aria-label="GitHub">
-                        <i class="fa-brands fa-github"></i>
-                    </a>
-
-                    <!-- Twitter -->
-                    <a class="icon-link" href="https://x.com/f280_karim" target="_blank" rel="noreferrer"
-                        aria-label="Twitter">
-                        <i class="fa-brands fa-x-twitter"></i>
-                    </a>
-
-                    <!-- Google Scholar -->
-                    <a class="icon-link"
-                        href="https://scholar.google.com/citations?hl=en&user=cU1Y0usAAAAJ&view_op=list_works&sortby=pubdate"
-                        target="_blank" rel="noreferrer" aria-label="Google Scholar">
-                        <i class="fa-brands fa-google-scholar"></i>
-
-                    </a>
-                </div>
-                <!-- </div> -->
-
+                <div class="links" id="social-links"></div>
             </div>
-
-
 
             <div class="col-md-9">
-
-                <div style="font-family: 'Raleway', sans-serif;">
-                    <p> Hi! I am <b>Md Faizal Karim. </b></p>
-
-                    <p>I am a 1<sup>st</sup> year CS PhD student at <a class="college-link" target="_blank"
-                            href="https://www.jhu.edu/">Johns Hopkins University <img src="./Images/jhu_logo.jpg"
-                                class="inline-logo"></img> </a> and I am working with
-                        <u><a class="college-link" target="_blank"
-                                href="https://engineering.jhu.edu/faculty/krishna-murthy-jatavallabhula/">Prof. Krishna
-                                Murthy</a></u> in
-                        <u><a class="college-link" target="_blank" href="https://sci-fi-lab.github.io/">Sci-Phy</a></u>
-                        Lab.
-                    </p>
-
-                    <p>Previously, I was a CS dual-degree student at <a class="college-link" target="_blank"
-                            href="https://www.iiit.ac.in/">IIIT Hyderabad <img src="./Images/iiit-logo.jpeg"
-                                class="inline-logo"></img> </a> and completed my thesis on
-                        "Physically stable dual-arm grasping" supervised by <u><a class="college-link" target="_blank"
-                                href="https://www.iiit.ac.in/people/faculty/mkrishna/">Prof. K Madhava Krishna</a></u>.
-                    </p>
-
-
-                    <p>
-                        Outside research, I spend my
-                        time reading (do check out my reading list <a href="./reading-list.html"
-                            target="_blank"><em>here</em></a>), playing open-world
-                        games and attending every major concert I can!
-                    </p>
-
-
-                </div>
-
+                <div class="my-font" id="bio-text"></div>
             </div>
-
-
-
         </div>
 
-        <h1 class="display-6 mt-3 gradient-text" style="font-family: 'Montserrat', sans-serif;">Education</h1>
+        <h1 class="display-6 mt-3 heading-accent section-title">Education</h1>
         <hr>
 
         <div class="my-font">
-
-            <ul>
-                <li>
-                    Johns Hopkins University
-                    <div style="font-weight: 300;">PhD [2026 - Present]</div>
-                </li>
-
-                <li>
-                    International Institute of Information Technology, Hyderabad
-                    <div style="font-weight: 300;">BTech + MS by Research [2022 - 2026]</div>
-                </li>
-                <li>
-                    National Institute of Technology, Silchar
-                    <div style="font-weight: 300;">BTech (Discontinued) [2020 - 2022]</div>
-                </li>
-
-                <!-- <li>
-                    Don Bosco School, Guwahati
-                    <div style="font-weight: 300;">Class 1 - 12 [2008 - 2020]</div>
-                </li> -->
-            </ul>
-
+            <ul id="education-list"></ul>
         </div>
 
-        <h1 class="display-6 mt-1 gradient-text" style="font-family: 'Montserrat', sans-serif;">Publications</h1>
+        <h1 class="display-6 mt-3 heading-accent section-title">News</h1>
         <hr>
-
-        <div class="pub-list" style="font-family: 'Raleway', sans-serif;">
-
-            <div class="row">
-                <!-- GIF Column -->
-                <div class="col-md-3 text-center">
-                    <img src="./Images/partial-bigrasp-2.gif" alt="Project GIF" class="img-fluid rounded" width="100%">
-                </div>
-
-                <!-- Text Column -->
-                <div class="col-md-9">
-                    <span class="badge badge-dark rounded-pill">Aug, 2026</span>
-                    <u>PartialBiGrasp: Inferring Hidden Local Geometry for Bimanual Grasping from Partial Views</u>
-                    <b>(CoRL 2026, Austin)</b>
-                    <div class="mt-1">
-                        <i>Ayush Kaura<sup>&#x2605</sup>, Vignesh Vembar<sup>&#x2605</sup>,
-                            <b>Md Faizal Karim</b>, Keshab Patra, K Madhava Krishna</i>
-                    </div>
-
-
-                    <div class="row mt-2 pub-buttons">
-                        <div class="col-md-2">
-                            <a href="https://arxiv.org/abs/2608.19188" target="_blank" class="btn btn-outline-primary"
-                                role="button" data-mdb-ripple-init data-mdb-ripple-color="dark">Paper</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://github.com/partialbigrasp/codebase/tree/main" target="_blank"
-                                class="btn btn-outline-primary" role="button">Code</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://partialbigrasp.github.io/" target="_blank" class="btn btn-outline-primary"
-                                role="button">Website</a>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-            <div class="row" style="margin-top: 6%;">
-                <!-- GIF Column -->
-                <div class="col-md-3 text-center">
-                    <img src="./Images/obj_pose.png" alt="Project GIF" class="img-fluid rounded" width="80%">
-                </div>
-
-                <!-- Text Column -->
-                <div class="col-md-9">
-                    <span class="badge badge-dark rounded-pill">May, 2026</span>
-                    <u>Object Pose and Shape Estimation
-                        for Grasping: Does it Work?</u> (preprint)
-                    <div class="mt-1">
-                        <i>Pavan Karke<sup>&#x2605</sup>, Kushal Shah<sup>&#x2605</sup>,
-                            Gaurav Singh, <b>Md Faizal Karim</b>, K Madhava Krishna, Rajat Talak</i>
-                    </div>
-
-
-                    <div class="row mt-2 pub-buttons">
-                        <div class="col-md-2">
-                            <a href="https://arxiv.org/abs/2605.26944" target="_blank" class="btn btn-outline-primary"
-                                role="button" data-mdb-ripple-init data-mdb-ripple-color="dark">Paper</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://arxiv.org/abs/2605.26944" target="_blank" class="btn btn-outline-primary"
-                                role="button">Code</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://www.youtube.com/watch?v=siyVpkVEBoY" target="_blank"
-                                class="btn btn-outline-primary" role="button">Website</a>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-
-            <div class="row" style="margin-top: 6%;">
-                <!-- GIF Column -->
-                <div class="col-md-3 text-center">
-                    <img src="./Images/dagdiff_no_bg.gif" alt="Project GIF" class="img-fluid rounded" width="80%">
-                </div>
-
-                <!-- Text Column -->
-                <div class="col-md-9">
-                    <span class="badge badge-dark rounded-pill">Sep, 2025</span>
-                    <u>DAGDiff: Guiding Dual-Arm Grasp Diffusion to Stable and Collision-Free Grasps</u> <b>(ICRA 2026,
-                        Vienna)</b>
-                    <div class="mt-1">
-                        <i><b>Md Faizal Karim</b><sup>&#x2605</sup>, Vignesh Vembar<sup>&#x2605</sup>, Keshab Patra,
-                            Gaurav
-                            Singh, K Madhava Krishna</i>
-                    </div>
-
-
-                    <div class="row mt-2 pub-buttons">
-                        <div class="col-md-2">
-                            <a href="https://arxiv.org/abs/2509.21145" target="_blank" class="btn btn-outline-primary"
-                                role="button" data-mdb-ripple-init data-mdb-ripple-color="dark">Paper</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://github.com/DAG-Diff/dual-arm-grasp-diffusion" target="_blank"
-                                class="btn btn-outline-primary" role="button">Code</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://dag-diff.github.io/dagdiff/" target="_blank"
-                                class="btn btn-outline-primary" role="button">Website</a>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-
-            <div class="row" style="margin-top: 6%;">
-                <!-- GIF Column -->
-                <div class="col-md-3 text-center">
-                    <img src="./Images/dg16m.gif" alt="Project GIF" class="img-fluid rounded" width="80%">
-                </div>
-
-                <!-- Text Column -->
-                <div class="col-md-9">
-                    <span class="badge badge-dark rounded-pill">Mar, 2025</span>
-                    <u>DG16M: A Large-Scale Dataset for Dual-Arm Grasping with Force-Optimized Grasps</u> <b>(IROS 2025,
-                        Hangzhou)</b>
-                    <div class="mt-1">
-                        <i><b>Md Faizal Karim</b><sup>&#x2605</sup>, Mohammed Saad Hashmi<sup>&#x2605</sup>, Shreya
-                            Bollimuntha, Mahesh Reddy Tapeti, Gaurav
-                            Singh, Nagamanikandan Govindan, K Madhava Krishna</i>
-                    </div>
-
-                    <div class="row mt-2 pub-buttons">
-                        <div class="col-md-2">
-                            <a href="https://arxiv.org/abs/2503.08358" target="_blank" class="btn btn-outline-primary"
-                                role="button" data-mdb-ripple-init data-mdb-ripple-color="dark">Paper</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://github.com/DG16M/DG16M-dataset" target="_blank"
-                                class="btn btn-outline-primary" role="button">Code</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://dg16m.github.io/DG-16M/" target="_blank" class="btn btn-outline-primary"
-                                role="button">Website</a>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-            <div class="row" style="margin-top: 6%;">
-                <!-- GIF Column -->
-                <div class="col-md-3 text-center">
-                    <img src="./Images/davil.gif" alt="Project GIF" class="img-fluid rounded" width="80%">
-                </div>
-
-                <!-- Text Column -->
-                <div class="col-md-9">
-                    <span class="badge badge-dark rounded-pill">Sept, 2024</span>
-                    <u>DA-VIL: Adaptive Dual-Arm Manipulation with Reinforcement Learning and Variable Impedance
-                        Control</u> <b>(ICRA 2025, Atlanta)</b>
-                    <div class="mt-1">
-                        <i><b>Md Faizal Karim</b><sup>&#x2605</sup>, Shreya Bollimuntha<sup>&#x2605</sup>, Mohammed Saad
-                            Hashmi, Autrio Das, Gaurav
-                            Singh, Srinath Sridhar, Arun Kumar Singh, Nagamanikandan Govindan, K Madhava Krishna</i>
-                    </div>
-
-                    <div class="row mt-2 pub-buttons">
-                        <div class="col-md-2">
-                            <a href="https://arxiv.org/abs/2410.19712" target="_blank" class="btn btn-outline-primary"
-                                role="button" data-mdb-ripple-init data-mdb-ripple-color="dark">Paper</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://dualarmvil.github.io/Dual-Arm-VIL/" target="_blank"
-                                class="btn btn-outline-primary" role="button">Code</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://dualarmvil.github.io/Dual-Arm-VIL/" target="_blank"
-                                class="btn btn-outline-primary" role="button">Website</a>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-            <div class="row" style="margin-top:6%">
-                <!-- GIF Column -->
-                <div class="col-md-3 text-center">
-                    <img src="./Images/cgdf.gif" alt="Project GIF" class="img-fluid rounded" width="80%">
-                </div>
-
-                <!-- Text Column -->
-                <div class="col-md-9">
-                    <span class="badge badge-dark rounded-pill">Mar, 2024</span>
-                    <u>Constrained 6-DoF Grasp Generation on Complex Shapes for Improved
-                        Dual-Arm Manipulation</u> <b>(IROS 2024, Abu Dhabi)</b>
-
-                    <div class="mt-1">
-                        <i>Gaurav Singh<sup>&#x2605</sup>, Sanket Kalwar<sup>&#x2605</sup>, <b>Md
-                                Faizal Karim</b>, Bipasha Sen, Nagamanikandan Govindan, Srinath Sridhar, K Madhava
-                            Krishna</i>
-                    </div>
-
-                    <div class="row mt-2 pub-buttons">
-                        <div class="col-md-2">
-                            <a href="https://arxiv.org/pdf/2404.04643" target="_blank" class="btn btn-outline-primary"
-                                role="button" data-mdb-ripple-init data-mdb-ripple-color="dark">Paper</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://github.com/constrained-grasp-diffusion/constrained-grasp-diffusion"
-                                target="_blank" class="btn btn-outline-primary" role="button">Code</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://constrained-grasp-diffusion.github.io/" target="_blank"
-                                class="btn btn-outline-primary" role="button">Website</a>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-            <div class="row" style="margin-top:6%">
-                <!-- GIF Column -->
-                <div class="col-md-3 text-center">
-                    <img src="./Images/nmt.png" alt="Project GIF" class="img-fluid rounded" width="80%">
-                </div>
-
-                <!-- Text Column -->
-                <div class="col-md-9">
-                    <span class="badge badge-dark rounded-pill">Oct, 2022</span>
-                    <u>Investigation of English to Hindi Multimodal Neural Machine Translation using
-                        Transliteration-based Phrase Pairs Augmentation</u> <b>(WAT 2022, South Korea)</b>
-
-                    <div class="mt-1">
-                        <i>Sahinur Rahman Laskar<sup>&#x2605</sup>, Rahul Singh, <b>Md
-                                Faizal Karim</b>, Riyanka Manna, Partha Pakray, Sivaji Bandyopadhyay</i>
-                    </div>
-
-                    <div class="row mt-2 pub-buttons">
-                        <div class="col-md-2">
-                            <a href="https://aclanthology.org/2022.wat-1.15/" target="_blank"
-                                class="btn btn-outline-primary" role="button" data-mdb-ripple-init
-                                data-mdb-ripple-color="dark">Paper</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://aclanthology.org/2022.wat-1.15/" target="_blank"
-                                class="btn btn-outline-primary" role="button">Code</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="https://aclanthology.org/2022.wat-1.15/" target="_blank"
-                                class="btn btn-outline-primary" role="button">Website</a>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
+        <div class="my-font news-scroll">
+            <ul id="news-list"></ul>
         </div>
 
-
-
-        <h1 class="display-6 mt-3 gradient-text" style="font-family: 'Montserrat', sans-serif;">News</h1>
+        <h1 class="display-6 mt-1 heading-accent section-title">Publications</h1>
         <hr>
-        <div style="font-family: 'Raleway', sans-serif;">
-            <ul>
-                <li><span class="badge badge-success rounded-pill">Sept, 2026</span>
-                    <i>PartialBiGrasp: Inferring Hidden Local Geometry for Bimanual Grasping from Partial Views</i> accepted at
-                    CoRL 2026, Austin, USA. 🇺🇸
-                </li>
 
-                <li><span class="badge badge-success rounded-pill">July, 2026</span>
-                    Graduated from IIIT Hyderabad <img src="./Images/iiit-logo.jpeg" class="inline-logo"
-                        alt="IIIT Hyderabad"> (<em><a href="./Images/iiit-thesis.pdf" target="_blank">thesis</a></em>)
-                    and I'll be joining JHU <img src="./Images/jhu-blue-jay.png" class="inline-logo" alt="JHU"> this
-                    fall as a CS PhD student.
-                </li>
-
-                <li><span class="badge badge-success rounded-pill">Jan, 2026</span>
-                    <i>DAGDiff: Guiding Dual-Arm Grasp Diffusion to Stable and Collision-Free Grasps</i> accepted at
-                    ICRA 2026, Vienna, Austria. 🇦🇹
-                </li>
-
-                <li><span class="badge badge-success rounded-pill">Jun, 2025</span>
-                    <i>DG16M: A Large-Scale Dataset for Dual-Arm Grasping with Force-Optimized Grasps</i> accepted at
-                    IROS 2025, Hangzhou, China. 🇨🇳
-                </li>
-
-                <li><span class="badge badge-success rounded-pill">Jan, 2025</span>
-                    <i>DA-VIL: Adaptive Dual-Arm Manipulation with Reinforcement Learning and Variable Impedance
-                        Control</i>
-                    accepted at
-                    ICRA 2025, Atlanta, USA. 🇺🇸
-                </li>
-                <li><span class="badge badge-success rounded-pill">June, 2024</span>
-                    <i>Constrained 6-DoF Grasp Generation on Complex Shapes for Improved Dual-Arm Manipulation</i>
-                    accepted at
-                    IROS 2024, Abu Dhabi, UAE. 🇦🇪
-                </li>
-
-                <li><span class="badge badge-success rounded-pill">May, 2023</span>
-                    Joined Robotics Research Center <img src="./Images/rrc-logo.png" class="inline-logo" alt="RRC"> IIIT
-                    Hyderabad and currently working on 3D Shape Completition.</li>
-                <li>
-                    <span class="badge badge-success rounded-pill">Oct, 2022</span>
-                    1st prize winner in Megathon 2022 - &nbsp;annual hackathon of IIIT Hyderabad.
-                </li>
-                <li>
-                    <span class="badge badge-success rounded-pill">June, 2022</span>
-                    Research Intern under <u><a class="college-link" href="http://cs.nits.ac.in/partha/"
-                            target="_blank">Dr. Partha Pakray</a></u>.
-                    Worked on Speech-to-Text translation of Assamese to English.
-                </li>
-                <li> <span class="badge badge-success rounded-pill">Mar, 2022</span>
-                    Best Project from East zone in Anveshan 2022 - &nbsp;annual Student Research Convention, held at
-                    AMET Chennai.</li>
-                <li> <span class="badge badge-success rounded-pill">Sept, 2021</span>
-                    2nd prize winner in Data Strata 2021 - &nbsp;annual data science hackathon of NIT Silchar.</li>
-            </ul>
-        </div>
-
-
-        <!-- <h1 class="display-6 mt-3 gradient-text" style="font-family: 'Montserrat', sans-serif;">Articles</h1>
-        <hr> -->
-
-        <!-- <div style="font-family: 'Raleway', sans-serif;">
-            <ol>
-                <li>
-                    <a class="college-link" href="./articles/like-kl.html" target="_blank" style="color: black;">
-                        <h4>\(f\)-Divergence - lower bound and its connection to GANs</h4>
-                    </a>
-                    <p class="mb-2">Explore the mathematical foundations of \(f\)-Divergence and its pivotal role in
-                        shaping
-                        the training dynamics of GANs. Unveil how lower bounds drive stability and efficiency in
-                        generative modeling.
-                    </p>
-                    <span class="badge badge-primary rounded-pill">July, 2024</span>
-                    <span class="badge badge-danger rounded-pill">GANs</span>
-                    <span class="badge badge-danger rounded-pill">Generative Modelling</span>
-
-                </li>
-            </ol>
-
-            <ol>
-                <li>
-                    <a class="college-link" href="./articles/like-kl.html" target="_blank" style="color: black;">
-                        <h4>Maximizing Likelihood is equivalent to minimizing the KL Divergence</h4>
-                    </a>
-                    <p class="mb-2">The above statement often comes up in papers involving generative models, and most
-                        of the times it is taken for granted.
-                        Hence, here is a proof to one of the most important building blocks for all generative models.
-                    </p>
-                    <span class="badge badge-primary rounded-pill">Apr, 2024</span>
-                    <span class="badge badge-danger rounded-pill">Statistics</span>
-                    <span class="badge badge-danger rounded-pill">Generative Modelling</span>
-
-                </li>
-            </ol>
-
-
-        </div> -->
-
-        <!-- <h1 class="display-6 mt-3 gradient-text" style="font-family: 'Montserrat', sans-serif;">Contact</h1>
-        <hr>
-        <div style="font-family: 'Raleway', sans-serif;">
-
-            <p class="pb-3"> Mail: <a class="college-link" href="mailto: md.faizal@research.iiit.ac.in"
-                    target="_blank">md.faizal@research.iiit.ac.in</a><br />
-                Address: IIIT Hyderabad, Gachibowli, Hyderabad, Telangana - 500032.
-            </p>
-        </div> -->
+        <div class="pub-list my-font" id="publications-list"></div>
 
     </div>
 
-
     <footer class="footer bg-dark text-center text-lg-start text-light py-2 mt-4">
-        <div class=" text-center">
-            Updated June, 2026
-        </div>
+        <div class="text-center" id="last-updated"></div>
     </footer>
 
+    <script src="js/main.js"></script>
 
 </body>
 

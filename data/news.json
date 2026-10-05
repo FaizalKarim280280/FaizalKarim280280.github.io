@@ -1,0 +1,46 @@
+[
+  {
+    "date": "Sept, 2026",
+    "html": "<i>PartialBiGrasp: Inferring Hidden Local Geometry for Bimanual Grasping from Partial Views</i> accepted at CoRL 2026, Austin, USA. 🇺🇸"
+  },
+  {
+    "date": "July, 2026",
+    "html": "Graduated from IIIT Hyderabad <img src=\"./Images/iiit-logo.jpeg\" class=\"inline-logo\" alt=\"IIIT Hyderabad\"> (<em><a href=\"./Images/iiit-thesis.pdf\" target=\"_blank\">thesis</a></em>) and I'll be joining JHU <img src=\"./Images/jhu-blue-jay.png\" class=\"inline-logo\" alt=\"JHU\"> this fall as a CS PhD student."
+  },
+  {
+    "date": "Jan, 2026",
+    "html": "<i>DAGDiff: Guiding Dual-Arm Grasp Diffusion to Stable and Collision-Free Grasps</i> accepted at ICRA 2026, Vienna, Austria. 🇦🇹"
+  },
+  {
+    "date": "Jun, 2025",
+    "html": "<i>DG16M: A Large-Scale Dataset for Dual-Arm Grasping with Force-Optimized Grasps</i> accepted at IROS 2025, Hangzhou, China. 🇨🇳"
+  },
+  {
+    "date": "Jan, 2025",
+    "html": "<i>DA-VIL: Adaptive Dual-Arm Manipulation with Reinforcement Learning and Variable Impedance Control</i> accepted at ICRA 2025, Atlanta, USA. 🇺🇸"
+  },
+  {
+    "date": "June, 2024",
+    "html": "<i>Constrained 6-DoF Grasp Generation on Complex Shapes for Improved Dual-Arm Manipulation</i> accepted at IROS 2024, Abu Dhabi, UAE. 🇦🇪"
+  },
+  {
+    "date": "May, 2023",
+    "html": "Joined Robotics Research Center <img src=\"./Images/rrc-logo.png\" class=\"inline-logo\" alt=\"RRC\"> IIIT Hyderabad and currently working on 3D Shape Completition."
+  },
+  {
+    "date": "Oct, 2022",
+    "html": "1st prize winner in Megathon 2022 - &nbsp;annual hackathon of IIIT Hyderabad."
+  },
+  {
+    "date": "June, 2022",
+    "html": "Research Intern under <u><a class=\"college-link\" href=\"http://cs.nits.ac.in/partha/\" target=\"_blank\">Dr. Partha Pakray</a></u>. Worked on Speech-to-Text translation of Assamese to English."
+  },
+  {
+    "date": "Mar, 2022",
+    "html": "Best Project from East zone in Anveshan 2022 - &nbsp;annual Student Research Convention, held at AMET Chennai."
+  },
+  {
+    "date": "Sept, 2021",
+    "html": "2nd prize winner in Data Strata 2021 - &nbsp;annual data science hackathon of NIT Silchar."
+  }
+]

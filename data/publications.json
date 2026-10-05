@@ -1,0 +1,167 @@
+[
+  {
+    "date": "Sept, 2026",
+    "title": "Steer2Grasp: Inference-Time Embodiment-Aware Steering for Diverse Physically Feasible Grasp Diffusion",
+    "venue": "Under Review",
+    "image": "./Images/steer2grasp.gif",
+    "imageWidth": "100%",
+    "authors": [
+      { "name": "Vignesh Vembar", "star": true },
+      { "name": "Ayush Kaura", "star": true },
+      { "name": "A Pradmaprabhan", "star": true },
+      { "name": "Siddharth Sinha" },
+      { "name": "Kailash Nagaranjan" },
+      { "name": "Keshab Patra" },
+      { "name": "Md Faizal Karim", "me": true },
+      { "name": "K Madhava Krishna" }
+    ],
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.33546",
+      "website": "https://steer2grasp.github.io/", 
+      "code": "https://steer2grasp.github.io/"
+    }
+  },
+  {
+    "date": "Aug, 2026",
+    "title": "PartialBiGrasp: Inferring Hidden Local Geometry for Bimanual Grasping from Partial Views",
+    "venue": "CoRL 2026, Austin",
+    "image": "./Images/partial-bigrasp-2.gif",
+    "imageWidth": "100%",
+    "authors": [
+      { "name": "Ayush Kaura", "star": true },
+      { "name": "Vignesh Vembar", "star": true },
+      { "name": "Md Faizal Karim", "me": true },
+      { "name": "Keshab Patra" },
+      { "name": "K Madhava Krishna" }
+    ],
+    "links": {
+      "paper": "https://arxiv.org/abs/2608.19188",
+      "code": "https://github.com/partialbigrasp/codebase/tree/main",
+      "website": "https://partialbigrasp.github.io/"
+    }
+  },
+  {
+    "date": "May, 2026",
+    "title": "Object Pose and Shape Estimation for Grasping: Does it Work?",
+    "venue": "preprint",
+    "image": "./Images/obj_pose.png",
+    "imageWidth": "80%",
+    "authors": [
+      { "name": "Pavan Karke", "star": true },
+      { "name": "Kushal Shah", "star": true },
+      { "name": "Gaurav Singh" },
+      { "name": "Md Faizal Karim", "me": true },
+      { "name": "K Madhava Krishna" },
+      { "name": "Rajat Talak" }
+    ],
+    "links": {
+      "paper": "https://arxiv.org/abs/2605.26944",
+      "code": "https://arxiv.org/abs/2605.26944",
+      "website": "https://www.youtube.com/watch?v=siyVpkVEBoY"
+    }
+  },
+  {
+    "date": "Sep, 2025",
+    "title": "DAGDiff: Guiding Dual-Arm Grasp Diffusion to Stable and Collision-Free Grasps",
+    "venue": "ICRA 2026, Vienna",
+    "image": "./Images/dagdiff_no_bg2.gif",
+    "imageWidth": "100%",
+    "authors": [
+      { "name": "Md Faizal Karim", "me": true, "star": true },
+      { "name": "Vignesh Vembar", "star": true },
+      { "name": "Keshab Patra" },
+      { "name": "Gaurav Singh" },
+      { "name": "K Madhava Krishna" }
+    ],
+    "links": {
+      "paper": "https://arxiv.org/abs/2509.21145",
+      "code": "https://github.com/DAG-Diff/dual-arm-grasp-diffusion",
+      "website": "https://dag-diff.github.io/dagdiff/"
+    }
+  },
+  {
+    "date": "Mar, 2025",
+    "title": "DG16M: A Large-Scale Dataset for Dual-Arm Grasping with Force-Optimized Grasps",
+    "venue": "IROS 2025, Hangzhou",
+    "image": "./Images/dg16m.gif",
+    "imageWidth": "80%",
+    "authors": [
+      { "name": "Md Faizal Karim", "me": true, "star": true },
+      { "name": "Mohammed Saad Hashmi", "star": true },
+      { "name": "Shreya Bollimuntha" },
+      { "name": "Mahesh Reddy Tapeti" },
+      { "name": "Gaurav Singh" },
+      { "name": "Nagamanikandan Govindan" },
+      { "name": "K Madhava Krishna" }
+    ],
+    "links": {
+      "paper": "https://arxiv.org/abs/2503.08358",
+      "code": "https://github.com/DG16M/DG16M-dataset",
+      "website": "https://dg16m.github.io/DG-16M/"
+    }
+  },
+  {
+    "date": "Sept, 2024",
+    "title": "DA-VIL: Adaptive Dual-Arm Manipulation with Reinforcement Learning and Variable Impedance Control",
+    "venue": "ICRA 2025, Atlanta",
+    "image": "./Images/davil.gif",
+    "imageWidth": "80%",
+    "authors": [
+      { "name": "Md Faizal Karim", "me": true, "star": true },
+      { "name": "Shreya Bollimuntha", "star": true },
+      { "name": "Mohammed Saad Hashmi" },
+      { "name": "Autrio Das" },
+      { "name": "Gaurav Singh" },
+      { "name": "Srinath Sridhar" },
+      { "name": "Arun Kumar Singh" },
+      { "name": "Nagamanikandan Govindan" },
+      { "name": "K Madhava Krishna" }
+    ],
+    "links": {
+      "paper": "https://arxiv.org/abs/2410.19712",
+      "code": "https://dualarmvil.github.io/Dual-Arm-VIL/",
+      "website": "https://dualarmvil.github.io/Dual-Arm-VIL/"
+    }
+  },
+  {
+    "date": "Mar, 2024",
+    "title": "Constrained 6-DoF Grasp Generation on Complex Shapes for Improved Dual-Arm Manipulation",
+    "venue": "IROS 2024, Abu Dhabi",
+    "image": "./Images/cgdf.gif",
+    "imageWidth": "80%",
+    "authors": [
+      { "name": "Gaurav Singh", "star": true },
+      { "name": "Sanket Kalwar", "star": true },
+      { "name": "Md Faizal Karim", "me": true },
+      { "name": "Bipasha Sen" },
+      { "name": "Nagamanikandan Govindan" },
+      { "name": "Srinath Sridhar" },
+      { "name": "K Madhava Krishna" }
+    ],
+    "links": {
+      "paper": "https://arxiv.org/pdf/2404.04643",
+      "code": "https://github.com/constrained-grasp-diffusion/constrained-grasp-diffusion",
+      "website": "https://constrained-grasp-diffusion.github.io/"
+    }
+  },
+  {
+    "date": "Oct, 2022",
+    "title": "Investigation of English to Hindi Multimodal Neural Machine Translation using Transliteration-based Phrase Pairs Augmentation",
+    "venue": "WAT 2022, South Korea",
+    "image": "./Images/nmt.png",
+    "imageWidth": "80%",
+    "authors": [
+      { "name": "Sahinur Rahman Laskar", "star": true },
+      { "name": "Rahul Singh" },
+      { "name": "Md Faizal Karim", "me": true },
+      { "name": "Riyanka Manna" },
+      { "name": "Partha Pakray" },
+      { "name": "Sivaji Bandyopadhyay" }
+    ],
+    "links": {
+      "paper": "https://aclanthology.org/2022.wat-1.15/",
+      "code": "https://aclanthology.org/2022.wat-1.15/",
+      "website": "https://aclanthology.org/2022.wat-1.15/"
+    }
+  }
+]
