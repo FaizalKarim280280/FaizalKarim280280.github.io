@@ -9,6 +9,8 @@ Personal site. `index.html` is just structure — all content lives in `data/` a
 
 To add a publication or news item, copy an existing object in the array and edit it.
 
+`js/car.js` is the little car that follows the cursor and path-plans around text and images (desktop only). Its tunables (speeds, clearance, colours) are constants at the top of the file.
+
 ## Local preview
 
 Browsers block `fetch()` on `file://` URLs, so opening `index.html` directly will show a load error. Serve it instead:
