@@ -40,6 +40,10 @@
     const THREE_POINT_ANGLE = 1.75;  // rad off-heading, and
     const THREE_POINT_DIST = 110;    // px away or closer, before it reverses round
     const THREE_POINT_TIME = 1.2;    // max seconds of reversing
+    // Last resort when wedged in (several bumps in quick succession): shuffle round
+    // on the spot, slowly. In-place turning is hard, not impossible.
+    const ESCAPE_HEAT = 3;           // recent-bump score that allows it (decays 0.8/s)
+    const ESCAPE_RATE = 1.5;         // rad/s
     const LOOK_MIN = 12, LOOK_GAIN = 0.06, LOOK_MAX = 44;
     const STOP_DIST = 2, RESTART_DIST = 14;
     const REVERSE_TIME = 0.3, REVERSE_SPEED = 60;
@@ -94,6 +98,22 @@
     const SPARK_RATE = 70;           // sparks per second at full nitro
     const SPARK_BUCKETS = 4;
 
+    // Crashes: hitting something at speed bounces the car off it (it keeps a little of
+    // its head-on speed and some of its glancing speed, and glancing hits spin it).
+    // The page element it hit gets knocked and wobbles back, shards fly from the
+    // impact point and a shockwave ring spreads out. Slow bumps just nudge.
+    const CRASH_MIN_V = 70;          // px/s into the obstacle for a full crash
+    const CRASH_RESTITUTION = 0.35;  // share of the head-on speed it bounces back with
+    const CRASH_GRIP = 0.45;         // share of the glancing speed it keeps
+    const CRASH_DECEL = 900;         // px/s² while sliding after the hit
+    const CRASH_SPIN = 0.018;        // rad/s of spin per px/s of glancing speed
+    const KNOCK_MAX = 12;            // px a page element is knocked at most
+    const DEBRIS_CAP = 160;
+    const DEBRIS_LIFE = 0.7;         // seconds
+    const DEBRIS_DRAG = 4;           // 1/s
+    const RING_CAP = 8;
+    const RING_LIFE = 0.28;          // seconds
+
     const COLORS = {
         body: '#7c3aed',
         glass: '#2e1065',
@@ -137,14 +157,15 @@
 
     // ---------- State ----------
     // th is the direction of travel; beta is the drift angle the body is swung by.
-    const car = { x: 0, y: 0, th: -Math.PI / 2, beta: 0, v: 0, steer: 0, nitro: 0, braking: false, parked: true };
+    const car = { x: 0, y: 0, th: -Math.PI / 2, beta: 0, v: 0, steer: 0, nitro: 0, hitFlash: 0, braking: false, parked: true };
     const target = { x: 0, y: 0 };
     const pointer = { x: 0, y: 0, seen: false };
-    const stats = { frames: 0, frameMsTotal: 0, frameMsMax: 0, plans: 0, planMs: 0, planMsMax: 0, rebuilds: 0, rebuildMs: 0, bumps: 0, rects: 0, betaMax: 0, marks: 0, nitroMax: 0, boosts: 0, vMax: 0, overshoots: 0, skids: 0, threePoints: 0 };
+    const stats = { frames: 0, frameMsTotal: 0, frameMsMax: 0, plans: 0, planMs: 0, planMsMax: 0, rebuilds: 0, rebuildMs: 0, bumps: 0, rects: 0, betaMax: 0, marks: 0, nitroMax: 0, boosts: 0, vMax: 0, overshoots: 0, skids: 0, threePoints: 0, escapes: 0, crashes: 0, knocks: 0, knockMs: 0, lastHit: null };
 
     // Obstacles: axis-aligned boxes in document coordinates, [x0, y0, x1, y1] * n.
     let rects = new Float64Array(0);
     let rectCount = 0;
+    let rectEls = [];                // text node or element behind each rect, to knock on impact
     let tiles = [];
     let tilesX = 0;
     let tilesY = 0;
@@ -185,9 +206,13 @@
     let reverseT = 0;
     let threePoint = false;          // reversing as part of a three-point turn (vs. after a bump)
     let threePointBlockedUntil = 0;
+    let bumpHeat = 0;                // rises with each bump, decays over time
     let boostT = 0;                  // seconds of boost left
     let boostCool = 0;               // seconds until another boost may fire
-    const DRIVE = 0, LATE_BRAKING = 1, SKIDDING = 2;
+    const DRIVE = 0, LATE_BRAKING = 1, SKIDDING = 2, CRASHED = 3;
+    let crashVx = 0;                 // velocity and spin while bouncing off after a crash
+    let crashVy = 0;
+    let crashSpin = 0;
     let mode = DRIVE;
     let hotPlans = 0;                // plan count when late braking began (a replan cancels it)
     let spinDir = 1;                 // side the skid arcs and the body swings towards
@@ -221,6 +246,7 @@
 
     function collectRects() {
         const out = [];
+        const els = [];                  // the page element each rect belongs to
         const sx = window.scrollX;
         const sy = window.scrollY;
         const clips = clipContainers();
@@ -238,7 +264,7 @@
             }
             return c;
         };
-        const add = (r, c) => {
+        const add = (r, c, el) => {
             let x0 = r.left;
             let y0 = r.top;
             let x1 = r.right;
@@ -251,6 +277,7 @@
             }
             if (x1 - x0 < 1 || y1 - y0 < 1) return;
             out.push(x0 + sx, y0 + sy, x1 + sx, y1 + sy);
+            els.push(el);
         };
 
         const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
@@ -265,14 +292,15 @@
         for (let node = walker.nextNode(); node; node = walker.nextNode()) {
             range.selectNodeContents(node);
             const c = clipFor(node.parentElement);
-            for (const r of range.getClientRects()) add(r, c);
+            for (const r of range.getClientRects()) add(r, c, node);
         }
 
         // Images and icon glyphs; the hero banner is background, so it stays drivable.
         for (const el of document.body.querySelectorAll('img, i[class*="fa-"]')) {
             if (el.closest('.bg-image')) continue;
-            add(el.getBoundingClientRect(), clipFor(el));
+            add(el.getBoundingClientRect(), clipFor(el), el);
         }
+        rectEls = els;
         return out;
     }
 
@@ -708,6 +736,22 @@
         }
     }
 
+    // Whether creeping forward on full lock (dir = ±1) for a quarter turn stays clear.
+    function forwardArcClear(dir) {
+        const step = 6;
+        const n = Math.ceil((R_MIN * Math.PI) / 2 / step);
+        let x = car.x;
+        let y = car.y;
+        let th = car.th;
+        for (let k = 0; k < n; k++) {
+            th += (dir * step) / R_MIN;
+            x += Math.cos(th) * step;
+            y += Math.sin(th) * step;
+            if (poseCollides(x, y, th)) return false;
+        }
+        return true;
+    }
+
     // True if (x, y) lies inside one of the car's tightest turning circles, so it
     // can't be reached by driving forwards.
     function insideTurningCircle(x, y) {
@@ -836,6 +880,9 @@
 
         trackPath();
         if (tCross > OFF_PATH) needReplan = true;
+        bumpHeat = Math.max(0, bumpHeat - dt * 0.8);
+        car.hitFlash = Math.max(0, car.hitFlash - dt * 5);
+        if (mode === CRASHED) return crashStep(dt, now);
 
         if (reverseT > 0) {
             // Backing up with the wheels turned swings the nose towards where it wants to go.
@@ -902,11 +949,25 @@
         }
         const boosting = boostT > 0;
 
-        // Pointer close behind and the car nearly stopped: a forward arc can't reach a
-        // point inside its own turning circle, so back up and swing round instead.
+        // Wedged in after repeated bumps: shuffle round on the spot, slowly, until
+        // roughly lined up, then carry on driving.
+        if (bumpHeat > ESCAPE_HEAT && Math.abs(tAlpha) > 0.5) {
+            const nth = wrap(car.th + Math.sign(tAlpha) * ESCAPE_RATE * dt);
+            if (!poseCollides(car.x, car.y, nth + car.beta)) car.th = nth;
+            car.v = 0;
+            car.braking = false;
+            steerVisual(Math.sign(tAlpha), 0, dt);
+            stats.escapes++;
+            return true;
+        }
+
+        // Nearly stopped and needing to turn round: back up and swing round (a
+        // three-point turn) if the pointer is close behind, inside the turning circle,
+        // or there's no room to arc round forwards.
+        const turningAround = Math.abs(tAlpha) > THREE_POINT_ANGLE;
         if (mode === DRIVE && now > threePointBlockedUntil && car.v < V_CREEP + 10
-            && tRemaining < THREE_POINT_DIST
-            && (Math.abs(tAlpha) > THREE_POINT_ANGLE || insideTurningCircle(px[pathN - 1], py[pathN - 1]))) {
+            && ((tRemaining < THREE_POINT_DIST && (turningAround || insideTurningCircle(px[pathN - 1], py[pathN - 1])))
+                || (turningAround && !forwardArcClear(Math.sign(tAlpha))))) {
             car.v = 0;
             reverseT = THREE_POINT_TIME;
             threePoint = true;
@@ -962,9 +1023,9 @@
         const slide = -Math.sign(car.beta) * DRIFT_SLIDE * car.v * sliding;
 
         if (!moveCar(car.v, omega, dt, nb, slide) && car.v > 0) {
-            car.v = 0;
-            reverseT = REVERSE_TIME;
+            hitSomething(now, car.v, Math.cos(car.th), Math.sin(car.th));
             threePoint = false;
+            bumpHeat += 1;
             stats.bumps++;
         }
         steerVisual(omega, car.v, dt);
@@ -1054,7 +1115,9 @@
             car.y = ny;
             car.th = nth;
         } else {
-            car.v = 0;
+            hitSomething(now, car.v, Math.cos(nth), Math.sin(nth));
+            stats.bumps++;
+            if (mode === CRASHED) return true;
         }
         car.steer += (spinDir * 0.5 - car.steer) * Math.min(1, dt * 10);
         emitMarks(now);
@@ -1069,6 +1132,284 @@
             plan(now);
         }
         return true;
+    }
+
+    // ---------- Crashes ----------
+    let hitIdx = -1;                 // what contactAt() found: rect, contact point, and
+    let hitPx = 0;                   // the surface normal pointing back towards the car
+    let hitPy = 0;
+    let hitNx = 0;
+    let hitNy = 0;
+
+    function contactAt(x, y, th) {
+        const c = Math.cos(th) * BODY_OFFSET;
+        const s = Math.sin(th) * BODY_OFFSET;
+        const reach = BODY_OFFSET + BODY_R;
+        const n = gatherNear(x - reach, y - reach, x + reach, y + reach);
+        let best = Infinity;
+        hitIdx = -1;
+        for (let k = 0; k < n; k++) {
+            const b = near[k] * 4;
+            for (let side = -1; side <= 1; side += 2) {
+                const cx = x + side * c;
+                const cy = y + side * s;
+                const qx = clamp(cx, rects[b], rects[b + 2]);
+                const qy = clamp(cy, rects[b + 1], rects[b + 3]);
+                const d = Math.hypot(cx - qx, cy - qy);
+                if (d >= BODY_R || d >= best) continue;
+                best = d;
+                hitIdx = near[k];
+                hitPx = qx;
+                hitPy = qy;
+                hitNx = d > 1e-6 ? (cx - qx) / d : -Math.cos(th);
+                hitNy = d > 1e-6 ? (cy - qy) / d : -Math.sin(th);
+            }
+        }
+        return hitIdx >= 0;
+    }
+
+    // Knocks what's behind rect idx in direction (dx, dy) and lets it wobble back:
+    // for text, just the few words nearest the impact; for images and icons, the
+    // element itself. Compositor-only transform animations.
+    const lastKnock = new WeakMap();
+    function knock(idx, impact, dx, dy, now) {
+        let el = rectEls[idx];
+        if (el && el.nodeType === Node.TEXT_NODE) {
+            if (now - (lastKnock.get(el) ?? -Infinity) < 350) return;
+            if (knockWords(el, impact, dx, dy, hitPx - window.scrollX, hitPy - window.scrollY)) {
+                lastKnock.set(el, now);
+                stats.knocks++;
+                return;
+            }
+            el = el.parentElement;   // couldn't isolate words: knock the containing block instead
+        }
+        // Transforms don't apply to inline text boxes, so knock the nearest block-ish ancestor.
+        while (el && el !== document.body && el.tagName !== 'IMG' && getComputedStyle(el).display === 'inline') el = el.parentElement;
+        if (!el || el === document.body || !el.animate || el.classList.contains('site-content')) return;
+        if (now - (lastKnock.get(el) ?? -Infinity) < 350) return;
+        lastKnock.set(el, now);
+
+        const mag = Math.min(KNOCK_MAX, 2 + impact / 40);
+        const ox = dx * mag;
+        const oy = dy * mag;
+        // A small twist, kept tiny for wide elements so their far edge doesn't swing much.
+        const rot = (Math.random() < 0.5 ? -1 : 1) * Math.min(2, impact / 120) * Math.min(1, 120 / Math.max(1, el.offsetWidth));
+        const at = (f) => `translate(${(ox * f).toFixed(2)}px, ${(oy * f).toFixed(2)}px) rotate(${(rot * f).toFixed(3)}deg)`;
+        el.animate([
+            { transform: at(0) },
+            { transform: at(1), offset: 0.12 },
+            { transform: at(-0.45), offset: 0.38 },
+            { transform: at(0.2), offset: 0.64 },
+            { transform: at(-0.07), offset: 0.85 },
+            { transform: at(0) },
+        ], { duration: Math.min(650, 380 + impact * 0.6), easing: 'ease-out', composite: 'add' });
+        stats.knocks++;
+    }
+
+    // Word knocks. Nothing on the page is touched until a crash: then the hit text
+    // node is temporarily swapped for the same text with the nearest few words in
+    // their own inline-block spans (transforms don't apply to plain inline text).
+    // Each word is knocked, the nearest hardest, and once the animations finish the
+    // original text node is put back, so the page ends up exactly as it was.
+    const WORD_KNOCK_RADIUS = 60;    // px from the impact point
+    const WORD_KNOCK_MAX = 4;        // words knocked at most
+    const knockedNodes = new WeakSet();
+
+    function knockWords(node, impact, dx, dy, ix, iy) {
+        const parent = node.parentNode;
+        if (!parent || !node.isConnected || knockedNodes.has(node)) return false;
+        const t0 = performance.now();
+        const text = node.data;
+
+        // Measure only this node's words and keep those near the impact point.
+        const range = document.createRange();
+        const words = [];
+        const re = /\S+/g;
+        for (let m = re.exec(text); m; m = re.exec(text)) {
+            range.setStart(node, m.index);
+            range.setEnd(node, m.index + m[0].length);
+            const r = range.getBoundingClientRect();
+            const d = Math.hypot(Math.max(r.left - ix, 0, ix - r.right), Math.max(r.top - iy, 0, iy - r.bottom));
+            if (d <= WORD_KNOCK_RADIUS) words.push({ start: m.index, end: m.index + m[0].length, d });
+        }
+        if (!words.length) return false;
+        words.sort((a, b) => a.d - b.d);
+        words.length = Math.min(words.length, WORD_KNOCK_MAX);
+        words.sort((a, b) => a.start - b.start);
+
+        // Same text, with the chosen words wrapped.
+        const frag = document.createDocumentFragment();
+        const spans = [];
+        let pos = 0;
+        for (const w of words) {
+            if (w.start > pos) frag.appendChild(document.createTextNode(text.slice(pos, w.start)));
+            const span = document.createElement('span');
+            span.style.display = 'inline-block';
+            span.textContent = text.slice(w.start, w.end);
+            frag.appendChild(span);
+            spans.push({ span, w });
+            pos = w.end;
+        }
+        if (pos < text.length) frag.appendChild(document.createTextNode(text.slice(pos)));
+        const inserted = Array.from(frag.childNodes);
+        parent.replaceChild(frag, node);
+        knockedNodes.add(node);
+        pageWatcher.takeRecords();   // our own edit: don't rescan the page for it
+
+        let pending = spans.length;
+        const restore = () => {
+            if (--pending > 0) return;
+            if (inserted[0].parentNode === parent) {
+                parent.insertBefore(node, inserted[0]);
+                for (const n of inserted) n.remove();
+            }
+            knockedNodes.delete(node);
+            pageWatcher.takeRecords();
+        };
+
+        for (const { span, w } of spans) {
+            const share = Math.max(0.3, 1 - w.d / WORD_KNOCK_RADIUS);   // 1 for the word that took the hit
+            const mag = Math.min(16, 3 + impact / 30) * share;
+            const ox = dx * mag;
+            const oy = dy * mag;
+            const rot = (Math.random() < 0.5 ? -1 : 1) * Math.min(20, 4 + impact / 18) * share;
+            const at = (f, fr) => `translate(${(ox * f).toFixed(2)}px, ${(oy * f).toFixed(2)}px) rotate(${(rot * fr).toFixed(2)}deg)`;
+            const anim = span.animate([
+                { transform: at(0, 0) },
+                { transform: at(1, 1), offset: 0.14 },
+                { transform: at(-0.3, -0.5), offset: 0.42 },
+                { transform: at(0.12, 0.2), offset: 0.68 },
+                { transform: at(0, 0) },
+            ], { duration: Math.min(750, 450 + impact * 0.6), easing: 'ease-out' });
+            anim.onfinish = restore;
+            anim.oncancel = restore;
+        }
+        stats.knockMs = Math.max(stats.knockMs, performance.now() - t0);
+        return true;
+    }
+
+    // The car was blocked while travelling at `speed` in direction (dirX, dirY).
+    // Slow bumps nudge the element and back off; faster ones are full crashes.
+    function hitSomething(now, speed, dirX, dirY) {
+        const yaw = car.th + car.beta;
+        let found = false;
+        for (let step = 1; step <= 4 && !found; step++) found = contactAt(car.x + dirX * step * 3, car.y + dirY * step * 3, yaw);
+
+        const vn = found ? speed * (dirX * hitNx + dirY * hitNy) : -speed;   // negative = into the obstacle
+        const vx = dirX * speed;
+        const vy = dirY * speed;
+        const tx = vx - vn * hitNx;
+        const ty = vy - vn * hitNy;
+        // Head-on speed counts fully; a fast scrape along the surface counts in part.
+        const impact = Math.max(0, -vn) + 0.35 * Math.hypot(tx, ty);
+        stats.lastHit = { speed: Math.round(speed), impact: Math.round(impact) };
+        if (found) knock(hitIdx, impact, -hitNx, -hitNy, now);
+
+        if (!found || impact < CRASH_MIN_V) {
+            car.v = 0;
+            reverseT = REVERSE_TIME;
+            return;
+        }
+
+        crashVx = tx * CRASH_GRIP - vn * CRASH_RESTITUTION * hitNx;
+        crashVy = ty * CRASH_GRIP - vn * CRASH_RESTITUTION * hitNy;
+        // Glancing hits spin the car, the way depending on which side took the hit.
+        const side = Math.cos(yaw) * hitNy - Math.sin(yaw) * hitNx;
+        crashSpin = clamp(-side * Math.hypot(tx, ty) * CRASH_SPIN + (Math.random() - 0.5) * impact * 0.006, -8, 8);
+
+        car.v = 0;
+        car.nitro = 0;
+        car.hitFlash = 1;
+        boostT = 0;
+        reverseT = 0;
+        mode = CRASHED;
+        spawnDebris(hitPx, hitPy, hitNx, hitNy, impact, now);
+        spawnRing(hitPx, hitPy, impact, now);
+        stats.crashes++;
+    }
+
+    // Bouncing off after a crash: sliding to a stop while the spin dies away.
+    function crashStep(dt, now) {
+        car.braking = true;
+        const sp = Math.hypot(crashVx, crashVy);
+        const ns = Math.max(0, sp - CRASH_DECEL * dt);
+        if (sp > 1e-6) {
+            crashVx *= ns / sp;
+            crashVy *= ns / sp;
+        }
+        crashSpin *= Math.max(0, 1 - dt * 3.5);
+
+        const yaw = car.th + car.beta;
+        const nyaw = yaw + crashSpin * dt;
+        const nx = car.x + crashVx * dt;
+        const ny = car.y + crashVy * dt;
+        if (poseCollides(car.x, car.y, yaw) || !poseCollides(nx, ny, nyaw)) {
+            car.x = clamp(nx, 0, worldW);
+            car.y = clamp(ny, 0, worldH);
+            car.beta = nyaw - car.th;
+        } else if (!poseCollides(car.x, car.y, nyaw)) {
+            car.beta = nyaw - car.th;
+            crashVx = 0;
+            crashVy = 0;
+        } else {
+            crashVx = 0;
+            crashVy = 0;
+            crashSpin = 0;
+        }
+        car.v = ns;                  // lets skid marks show while it slides
+        car.steer += (0 - car.steer) * Math.min(1, dt * 8);
+        emitMarks(now);
+
+        if (ns < 15 && Math.abs(crashSpin) < 0.4) {
+            // Shaken but fine: carry on, facing whichever way it ended up.
+            car.th = wrap(car.th + car.beta);
+            car.beta = 0;
+            car.v = 0;
+            car.parked = false;
+            mode = DRIVE;
+            plan(now);
+        }
+        return true;
+    }
+
+    // Debris: x, y, vx, vy, birth time, spin, kind (0 grey chip, 1 paint fleck, 2 spark).
+    const debris = new Float64Array(DEBRIS_CAP * 7);
+    let debrisHead = 0;
+    let debrisCount = 0;
+
+    function spawnDebris(x, y, nx, ny, impact, now) {
+        const n = Math.min(26, 6 + Math.round(impact / 25));
+        const base = Math.atan2(ny, nx);
+        const t = now / 1000;
+        for (let k = 0; k < n; k++) {
+            const a = base + (Math.random() - 0.5) * 2.4;
+            const sp = (0.3 + Math.random() * 0.9) * (80 + impact * 0.7);
+            const i = debrisHead * 7;
+            debris[i] = x;
+            debris[i + 1] = y;
+            debris[i + 2] = Math.cos(a) * sp;
+            debris[i + 3] = Math.sin(a) * sp;
+            debris[i + 4] = t;
+            debris[i + 5] = (Math.random() - 0.5) * 30;
+            debris[i + 6] = Math.random() < 0.45 ? 0 : Math.random() < 0.6 ? 1 : 2;
+            debrisHead = (debrisHead + 1) % DEBRIS_CAP;
+            if (debrisCount < DEBRIS_CAP) debrisCount++;
+        }
+    }
+
+    // Shockwave rings: x, y, birth time, final radius.
+    const rings = new Float64Array(RING_CAP * 4);
+    let ringHead = 0;
+    let ringCount = 0;
+
+    function spawnRing(x, y, impact, now) {
+        const i = ringHead * 4;
+        rings[i] = x;
+        rings[i + 1] = y;
+        rings[i + 2] = now / 1000;
+        rings[i + 3] = Math.min(40, 10 + impact / 12);
+        ringHead = (ringHead + 1) % RING_CAP;
+        if (ringCount < RING_CAP) ringCount++;
     }
 
     // ---------- Nitro sparks (document coordinates, ring buffer) ----------
@@ -1269,6 +1610,13 @@
         ctx.fillRect(-13, -5, 1.5, 2.5);
         ctx.fillRect(-13, 2.5, 1.5, 2.5);
 
+        if (car.hitFlash > 0) {
+            ctx.fillStyle = `rgba(255, 255, 255, ${(car.hitFlash * 0.75).toFixed(3)})`;
+            ctx.beginPath();
+            roundRect(-13, -6, 26, 12, 4);
+            ctx.fill();
+        }
+
         ctx.restore();
     }
 
@@ -1344,6 +1692,68 @@
         }
     }
 
+    // Crash debris: chips and sparks flying out and slowing under drag, each a small
+    // spinning square. Batched by kind and opacity level.
+    const DEBRIS_RGB = ['107, 114, 128', '124, 58, 237', '251, 146, 60'];
+    const DEBRIS_LEVELS = 3;
+    function drawDebris(now, sx, sy) {
+        const t = now / 1000;
+        while (debrisCount && t - debris[((debrisHead - debrisCount + DEBRIS_CAP) % DEBRIS_CAP) * 7 + 4] > DEBRIS_LIFE) debrisCount--;
+        if (!debrisCount) return;
+
+        for (let kind = 0; kind < DEBRIS_RGB.length; kind++) {
+            for (let lv = 0; lv < DEBRIS_LEVELS; lv++) {
+                let any = false;
+                ctx.beginPath();
+                for (let k = 0; k < debrisCount; k++) {
+                    const i = ((debrisHead - debrisCount + k + DEBRIS_CAP) % DEBRIS_CAP) * 7;
+                    if (debris[i + 6] !== kind) continue;
+                    const age = t - debris[i + 4];
+                    const life = 1 - age / DEBRIS_LIFE;
+                    if (life <= 0 || Math.min(DEBRIS_LEVELS - 1, Math.floor(life * DEBRIS_LEVELS)) !== lv) continue;
+                    const travel = (1 - Math.exp(-DEBRIS_DRAG * age)) / DEBRIS_DRAG;
+                    const x = debris[i] + debris[i + 2] * travel - sx;
+                    const y = debris[i + 1] + debris[i + 3] * travel - sy;
+                    const a = debris[i + 5] * age;
+                    const h = kind === 2 ? 1 : 1.8;
+                    const c = Math.cos(a) * h;
+                    const s = Math.sin(a) * h;
+                    ctx.moveTo(x + c - s, y + s + c);
+                    ctx.lineTo(x - c - s, y - s + c);
+                    ctx.lineTo(x - c + s, y - s - c);
+                    ctx.lineTo(x + c + s, y + s - c);
+                    ctx.closePath();
+                    extend(x - 2, y - 2, x + 2, y + 2);
+                    any = true;
+                }
+                if (any) {
+                    ctx.fillStyle = `rgba(${DEBRIS_RGB[kind]}, ${((lv + 1) / DEBRIS_LEVELS).toFixed(2)})`;
+                    ctx.fill();
+                }
+            }
+        }
+    }
+
+    // Shockwave rings expanding from crash points.
+    function drawRings(now, sx, sy) {
+        const t = now / 1000;
+        while (ringCount && t - rings[((ringHead - ringCount + RING_CAP) % RING_CAP) * 4 + 2] > RING_LIFE) ringCount--;
+        for (let k = 0; k < ringCount; k++) {
+            const i = ((ringHead - ringCount + k + RING_CAP) % RING_CAP) * 4;
+            const p = (t - rings[i + 2]) / RING_LIFE;
+            if (p < 0 || p > 1) continue;
+            const r = 3 + rings[i + 3] * (1 - (1 - p) * (1 - p));
+            const x = rings[i] - sx;
+            const y = rings[i + 1] - sy;
+            ctx.lineWidth = 0.5 + 2 * (1 - p);
+            ctx.strokeStyle = `rgba(76, 29, 149, ${(0.7 * (1 - p)).toFixed(3)})`;
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, 2 * Math.PI);
+            ctx.stroke();
+            extend(x - r - 3, y - r - 3, x + r + 3, y + r + 3);
+        }
+    }
+
     function draw(now) {
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         if (hasBox) ctx.clearRect(box[0], box[1], box[2], box[3]);
@@ -1357,6 +1767,8 @@
         const sy = window.scrollY;
         drawMarks(now, sx, sy);
         drawSparks(now, sx, sy);
+        drawDebris(now, sx, sy);
+        drawRings(now, sx, sy);
 
         const vx = car.x - sx;
         const vy = car.y - sy;
@@ -1391,8 +1803,8 @@
         stats.frameMsTotal += ms;
         if (ms > stats.frameMsMax) stats.frameMsMax = ms;
         if (markCount > stats.marks) stats.marks = markCount;
-        // Keep animating while skid marks or sparks are still fading out.
-        if (active || markCount || sparkCount) wake();
+        // Keep animating while marks, sparks, debris, rings or the hit flash are still fading.
+        if (active || markCount || sparkCount || debrisCount || ringCount || car.hitFlash > 0) wake();
         else lastTs = 0;
     }
 
@@ -1442,7 +1854,8 @@
     document.addEventListener('load', (e) => {
         if (e.target.tagName === 'IMG' && !e.target.closest('.bg-image')) scheduleRebuild();
     }, true);
-    new MutationObserver(scheduleRebuild).observe(document.body, { childList: true, subtree: true, characterData: true });
+    const pageWatcher = new MutationObserver(scheduleRebuild);
+    pageWatcher.observe(document.body, { childList: true, subtree: true, characterData: true });
     new ResizeObserver(scheduleRebuild).observe(document.body);
     if (document.fonts) document.fonts.ready.then(scheduleRebuild);
 
@@ -1458,6 +1871,25 @@
             path: () => Array.from({ length: pathN }, (_, k) => [px[k], py[k]]),
             isLooping: () => rafId !== 0,
             overshoot: () => ({ mode, lateBrake, skidDecel, radius: skidCurv ? 1 / skidCurv : Infinity, spinDir }),
+            control: () => ({ reverseT, threePoint, tAlpha, tRemaining, tAlong, seg, pathN, mode }),
+            knockAt: (x, y, impact, dx, dy) => {
+                for (let k = 0; k < rectCount; k++) {
+                    const b = k * 4;
+                    if (x < rects[b] || x > rects[b + 2] || y < rects[b + 1] || y > rects[b + 3]) continue;
+                    hitPx = x;
+                    hitPy = y;
+                    knock(k, impact, dx, dy, performance.now());
+                    return true;
+                }
+                return false;
+            },
+            launch: (x, y, th, v) => {
+                Object.assign(car, { x, y, th, v, beta: 0, parked: false });
+                mode = DRIVE;
+                reverseT = 0;
+                needReplan = true;
+                wake();
+            },
         };
     }
 })();
