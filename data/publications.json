@@ -2,7 +2,7 @@
   {
     "date": "Sept, 2026",
     "title": "Steer2Grasp: Inference-Time Embodiment-Aware Steering for Diverse Physically Feasible Grasp Diffusion",
-    "venue": "Under Review",
+    "venue": "Preprint",
     "image": "./Images/steer2grasp.gif",
     "imageWidth": "100%",
     "authors": [
@@ -43,7 +43,7 @@
   {
     "date": "May, 2026",
     "title": "Object Pose and Shape Estimation for Grasping: Does it Work?",
-    "venue": "preprint",
+    "venue": "Preprint",
     "image": "./Images/obj_pose.png",
     "imageWidth": "80%",
     "authors": [

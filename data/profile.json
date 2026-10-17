@@ -24,7 +24,7 @@
   ],
   "bio": [
     "Hi! I am <b>Faizal Karim.</b>",
-    "I am a 1<sup>st</sup> year CS PhD student at <a class=\"college-link\" target=\"_blank\" href=\"https://www.jhu.edu/\">Johns Hopkins University <img src=\"./Images/jhu_logo.jpg\" class=\"inline-logo\"></a> and I am working with <u><a class=\"college-link\" target=\"_blank\" href=\"https://engineering.jhu.edu/faculty/krishna-murthy-jatavallabhula/\">Prof. Krishna Murthy</a></u> in <u><a class=\"college-link\" target=\"_blank\" href=\"https://sci-fi-lab.github.io/\">Sci-Phy</a></u> Lab.",
+    "I am a first year CS PhD student at <a class=\"college-link\" target=\"_blank\" href=\"https://www.jhu.edu/\">Johns Hopkins University <img src=\"./Images/jhu_logo.jpg\" class=\"inline-logo\"></a> and I am working with <u><a class=\"college-link\" target=\"_blank\" href=\"https://engineering.jhu.edu/faculty/krishna-murthy-jatavallabhula/\">Prof. Krishna Murthy</a></u> in <u><a class=\"college-link\" target=\"_blank\" href=\"https://sci-fi-lab.github.io/\">Sci-Phy</a></u> Lab.",
     "Previously, I was a CS dual-degree student at <a class=\"college-link\" target=\"_blank\" href=\"https://www.iiit.ac.in/\">IIIT Hyderabad <img src=\"./Images/iiit-logo.jpeg\" class=\"inline-logo\"></a> and completed my thesis on \"Physically stable dual-arm grasping\" supervised by <u><a class=\"college-link\" target=\"_blank\" href=\"https://www.iiit.ac.in/people/faculty/mkrishna/\">Prof. K Madhava Krishna</a></u>.",
     "Outside research, I spend my time reading (do check out my reading list <a href=\"./reading-list.html\" target=\"_blank\"><em>here</em></a>), playing open-world games and attending every major concert I can!"
   ]
